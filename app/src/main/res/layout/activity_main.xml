@@ -22,7 +22,7 @@
     <EditText
         android:id="@+id/TextToBeAdded"
         android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_marginTop="76dp"
         android:background="@drawable/forget"
         android:hint="Enter text you want to add"
