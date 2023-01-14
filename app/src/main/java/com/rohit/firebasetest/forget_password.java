@@ -14,9 +14,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class forget_password extends AppCompatActivity {
-    private EditText regmailvar;
+   public EditText regmailvar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class forget_password extends AppCompatActivity {
         backtologinvar.setOnClickListener(view -> startActivity(new Intent(forget_password.this,loginActivity.class)));
 
 
-        //to handle resetbutton
+        //to handle reset button
         resetbuttonvar.setOnClickListener(view -> {
             String mail=regmailvar.getText().toString().trim();
             if(mail.isEmpty())
@@ -39,20 +40,21 @@ public class forget_password extends AppCompatActivity {
             else
                 {
 
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(mail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                            {
-                                Toast.makeText(forget_password.this, "Password resetting link sent on registered email(Please check spam folder if email is not found in inbox)", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                Toast.makeText(forget_password.this, "Can't reset password, please try after some time.", Toast.LENGTH_SHORT).show();
-                            }
 
-                        }
-                    });
+                        FirebaseAuth.getInstance().sendPasswordResetEmail(mail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                {
+                                    Toast.makeText(forget_password.this, "Password resetting link sent on registered email.", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(forget_password.this, "Can't reset password, please try after some time.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
 
 
 
@@ -64,5 +66,6 @@ public class forget_password extends AppCompatActivity {
 //    public void backToLogin(View view) {
 //        startActivity(new Intent(forget_password.this,loginActivity.class));
 //    }
+
 
 }

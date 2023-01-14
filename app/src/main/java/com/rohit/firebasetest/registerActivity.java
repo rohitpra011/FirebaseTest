@@ -36,18 +36,15 @@ private FirebaseAuth auth;
         //to display back button on top
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String textEmail=email.getText().toString();
-                String textPassword=password.getText().toString();
-                if (TextUtils.isEmpty(textEmail)||TextUtils.isEmpty(textPassword)){
-                    Toast.makeText(registerActivity.this, "Enter valid credentials", Toast.LENGTH_SHORT).show();
-                }else if (textPassword.length()<6){
-                    Toast.makeText(registerActivity.this, "Password must be of minimum 6 characters", Toast.LENGTH_SHORT).show();
-                }else{
-                    registerUser(textEmail,textPassword);
-                }
+        register.setOnClickListener(view -> {
+            String textEmail=email.getText().toString();
+            String textPassword=password.getText().toString();
+            if (TextUtils.isEmpty(textEmail)||TextUtils.isEmpty(textPassword)){
+                Toast.makeText(registerActivity.this, "Enter valid credentials", Toast.LENGTH_SHORT).show();
+            }else if (textPassword.length()<6){
+                Toast.makeText(registerActivity.this, "Password must be of minimum 6 characters", Toast.LENGTH_SHORT).show();
+            }else{
+                registerUser(textEmail,textPassword);
             }
         });
     }

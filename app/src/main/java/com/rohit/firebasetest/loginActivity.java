@@ -1,5 +1,6 @@
 package com.rohit.firebasetest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,9 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -67,14 +71,28 @@ private FirebaseAuth auth;
 
 
     private void loginUser(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onSuccess(AuthResult authResult) {
-                Toast.makeText(loginActivity.this, "Login SuccessFul", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(loginActivity.this,MainActivity.class));
-                finish();
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful())
+                {
+                    checkEmailVarification();
+                }
+                else
+                {
+                    Toast.makeText(loginActivity.this, "Account doesn't exist", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+//        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//            @Override
+//            public void onSuccess(AuthResult authResult) {
+//                Toast.makeText(loginActivity.this, "Login SuccessFul", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(loginActivity.this,MainActivity.class));
+//                finish();
+//            }
+//        });
     }
 
     public void Login(View view) {
@@ -92,4 +110,20 @@ private FirebaseAuth auth;
 
 
     }
+
+   public void checkEmailVarification()
+   {
+       FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+    /*To avoid Null Pointer Exception*/   assert firebaseUser != null;
+       if(firebaseUser.isEmailVerified())
+       {
+           Toast.makeText(this, "Logged in ", Toast.LENGTH_SHORT).show();
+           finish();
+           startActivity(new Intent(loginActivity.this,MainActivity.class));
+       }
+       else
+       {
+           Toast.makeText(loginActivity.this, "Please check email and verify your account ", Toast.LENGTH_SHORT).show();
+       }
+   }
 }
